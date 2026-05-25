@@ -10,7 +10,7 @@ pipeline {
 
         stage('Package') {
             steps {
-                sh 'zip -r app.zip .'
+                sh 'rm -f app.zip && zip -r app.zip index.html appspec.yml scripts/'
             }
         }
 
