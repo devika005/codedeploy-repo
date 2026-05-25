@@ -10,7 +10,10 @@ pipeline {
 
         stage('Package') {
             steps {
-                sh 'rm -f app.zip && zip -r app.zip index.html appspec.yml scripts/'
+                sh '''
+                rm -f app.zip
+                zip -r app.zip index.html appspec.yml scripts
+                '''
             }
         }
 
@@ -23,10 +26,15 @@ pipeline {
         stage('Deploy using CodeDeploy') {
             steps {
                 sh '''
-                aws deploy create-deployment \
+                DEPLOYMENT_ID=$(aws deploy create-deployment \
                 --application-name devika-codedeploy \
                 --deployment-group-name devika-deployment-group \
-                --s3-location bucket=s3bucket-devika,key=app.zip,bundleType=zip
+                --s3-location bucket=s3bucket-devika,key=app.zip,bundleType=zip \
+                --query deploymentId --output text)
+
+                echo "Deployment ID: $DEPLOYMENT_ID"
+
+                aws deploy wait deployment-successful --deployment-id $DEPLOYMENT_ID
                 '''
             }
         }
