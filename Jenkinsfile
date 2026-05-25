@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Clone') {
             steps {
-                git branch: 'main', url: 'https://github.com/devika005/codedeploy-project.git'
+                git branch: 'main', url: 'https://github.com/devika005/codedeploy-repo.git'
             }
         }
 
