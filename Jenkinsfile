@@ -16,7 +16,7 @@ pipeline {
 
         stage('Upload to S3') {
             steps {
-                sh 'aws s3 cp app.zip s3://devika-s3/app.zip'
+                sh 'aws s3 cp app.zip s3://s3bucket-devika/app.zip'
             }
         }
 
@@ -26,7 +26,7 @@ pipeline {
                 aws deploy create-deployment \
                 --application-name devika-codedeploy \
                 --deployment-group-name devika-deployment-group \
-                --s3-location bucket=devika-s3,key=app.zip,bundleType=zip
+                --s3-location bucket=s3bucket-devika,key=app.zip,bundleType=zip
                 '''
             }
         }
